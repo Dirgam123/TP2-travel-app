@@ -18,12 +18,9 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    const hideSplashScreen = async () => {
-      if (loaded) {
-        await SplashScreen.hideAsync();
-      }
-    };
-    hideSplashScreen();
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
   }, [loaded]);
 
   if (!loaded) {
@@ -32,11 +29,11 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" />
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+      <StatusBar style="auto" />
     </ThemeProvider>
   );
 }
