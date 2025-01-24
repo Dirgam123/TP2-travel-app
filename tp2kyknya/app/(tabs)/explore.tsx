@@ -1,33 +1,35 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View, Text, ViewStyle, TextStyle } from 'react-native';
-
+import { useRouter } from 'expo-router'; // Import useRouter
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 
 interface Destination {
   id: string;
   name: string;
+  description: string;
+  price: string;
 }
 
 const destinations: Record<string, Record<string, Destination[]>> = {
   USA: {
-    "New York": [
-      { id: '1', name: 'Statue of Liberty' },
-      { id: '2', name: 'Central Park' },
+    'New York': [
+      { id: '1', name: 'Statue of Liberty', description: 'A symbol of freedom.', price: '$20' },
+      { id: '2', name: 'Central Park', description: 'A large park in the middle of NYC.', price: '$0' },
     ],
     California: [
-      { id: '3', name: 'Disneyland' },
-      { id: '4', name: 'Golden Gate Bridge' },
+      { id: '3', name: 'Disneyland', description: 'The happiest place on earth.', price: '$100' },
+      { id: '4', name: 'Golden Gate Bridge', description: 'Famous suspension bridge in San Francisco.', price: '$0' },
     ],
   },
   Indonesia: {
     Bali: [
-      { id: '5', name: 'Ubud Monkey Forest' },
-      { id: '6', name: 'Kuta Beach' },
+      { id: '5', name: 'Ubud Monkey Forest', description: 'A famous nature park in Bali.', price: '$10' },
+      { id: '6', name: 'Kuta Beach', description: 'A popular beach for surfing.', price: '$0' },
     ],
     Jakarta: [
-      { id: '7', name: 'National Monument' },
-      { id: '8', name: 'Ancol Dreamland' },
+      { id: '7', name: 'National Monument', description: 'A historical landmark in Indonesia.', price: '$5' },
+      { id: '8', name: 'Ancol Dreamland', description: 'A theme park in Jakarta.', price: '$30' },
     ],
   },
 };
@@ -35,6 +37,7 @@ const destinations: Record<string, Record<string, Destination[]>> = {
 export default function ExploreScreen(): JSX.Element {
   const [selectedCountry, setSelectedCountry] = useState<string>('USA');
   const [selectedCity, setSelectedCity] = useState<string>('New York');
+  const router = useRouter(); // Hook untuk routing
 
   const countryOptions = Object.keys(destinations);
   const cityOptions = Object.keys(destinations[selectedCountry] ?? {});
@@ -48,10 +51,23 @@ export default function ExploreScreen(): JSX.Element {
     setSelectedCity(city);
   };
 
+  const handlePress = (item: Destination) => {
+    router.push({
+      pathname: '/destination-detail', // Path ke halaman detail
+      params: {
+        name: item.name,
+        description: item.description,
+        price: item.price,
+        country: selectedCountry,
+        city: selectedCity,
+      },
+    });
+  };
+
   const places = destinations[selectedCountry]?.[selectedCity] ?? [];
 
-  const renderPlace = ({ item }: { item: Destination }) => (
-    <TouchableOpacity style={styles.placeCard}>
+  const renderItem = ({ item }: { item: Destination }) => (
+    <TouchableOpacity style={styles.card} onPress={() => handlePress(item)}>
       <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
     </TouchableOpacity>
   );
@@ -62,6 +78,7 @@ export default function ExploreScreen(): JSX.Element {
         Explore Destinations
       </ThemedText>
       
+      {/* Pilihan Negara */}
       <View style={styles.buttonGroup}>
         {countryOptions.map((country) => (
           <TouchableOpacity
@@ -74,6 +91,7 @@ export default function ExploreScreen(): JSX.Element {
         ))}
       </View>
 
+      {/* Pilihan Kota */}
       <View style={styles.buttonGroup}>
         {cityOptions.map((city) => (
           <TouchableOpacity
@@ -86,41 +104,26 @@ export default function ExploreScreen(): JSX.Element {
         ))}
       </View>
 
+      {/* Daftar Tempat Wisata */}
       <FlatList
         data={places}
         keyExtractor={(item) => item.id}
-        renderItem={renderPlace}
+        renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
-        ListEmptyComponent={
-          <ThemedText type="subtitle" style={styles.emptyText}>
-            No destinations available for this city.
-          </ThemedText>
-        }
       />
     </ThemedView>
   );
 }
 
-interface Styles {
-  container: ViewStyle;
-  headerText: TextStyle;
-  buttonGroup: ViewStyle;
-  button: ViewStyle;
-  selectedButton: ViewStyle;
-  listContainer: ViewStyle;
-  placeCard: ViewStyle;
-  emptyText: TextStyle;
-}
-
-const styles = StyleSheet.create<Styles>({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
   },
   headerText: {
-    marginBottom: 16,
     fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 16,
   },
   buttonGroup: {
     flexDirection: 'row',
@@ -142,15 +145,10 @@ const styles = StyleSheet.create<Styles>({
   listContainer: {
     gap: 12,
   },
-  placeCard: {
+  card: {
     padding: 12,
     backgroundColor: '#fff',
     borderRadius: 8,
     elevation: 2,
-    alignItems: 'center',
-  },
-  emptyText: {
-    textAlign: 'center',
-    marginTop: 16,
   },
 });

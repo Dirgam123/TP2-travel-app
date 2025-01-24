@@ -1,17 +1,20 @@
 import React from 'react';
-import { Image, StyleSheet, Platform, TouchableOpacity, ViewStyle, ImageStyle, TextStyle } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, ViewStyle, ImageStyle, TextStyle } from 'react-native';
+import { useRouter } from 'expo-router'; // Import useRouter for navigation
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
 export default function HomeScreen(): JSX.Element {
+  const router = useRouter(); // Initialize router
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#E6F7F8', dark: '#1D3D47' }}
       headerImage={
         <Image
-          source={require('../../assets/images/react-logo.png')} // Replace with a relevant travel image
+          source={require('@/assets/images/react-logo.png')} // Replace with a relevant travel image
           style={styles.headerImage}
         />
       }>
@@ -25,21 +28,21 @@ export default function HomeScreen(): JSX.Element {
         <ThemedView style={styles.destinations}>
           <TouchableOpacity style={styles.card}>
             <Image
-              source={require('../../assets/images/react-logo.png')} // Replace with Paris image
+              source={require('@/assets/images/react-logo.png')} // Replace with Paris image
               style={styles.cardImage}
             />
             <ThemedText type="cardTitle">Paris</ThemedText>
           </TouchableOpacity>
           <TouchableOpacity style={styles.card}>
             <Image
-              source={require('../../assets/images/react-logo.png')} // Replace with Bali image
+              source={require('@/assets/images/react-logo.png')} // Replace with Bali image
               style={styles.cardImage}
             />
             <ThemedText type="cardTitle">Bali</ThemedText>
           </TouchableOpacity>
           <TouchableOpacity style={styles.card}>
             <Image
-              source={require('../../assets/images/react-logo.png')} // Replace with New York image
+              source={require('@/assets/images/react-logo.png')} // Replace with New York image
               style={styles.cardImage}
             />
             <ThemedText type="cardTitle">New York</ThemedText>
@@ -49,7 +52,10 @@ export default function HomeScreen(): JSX.Element {
 
       <ThemedView style={styles.sectionContainer}>
         <ThemedText type="sectionTitle">Get Started</ThemedText>
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity
+          style={styles.ctaButton}
+          onPress={() => router.push('/explore')} // Navigate to Explore screen
+        >
           <ThemedText type="ctaText">Plan Your Trip</ThemedText>
         </TouchableOpacity>
       </ThemedView>

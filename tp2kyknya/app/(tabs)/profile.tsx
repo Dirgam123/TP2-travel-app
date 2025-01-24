@@ -12,19 +12,19 @@ export default function ProfileScreen(): JSX.Element {
   const handleLogout = () => {
     console.log('Logout clicked');
   };
-
+  
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.profileHeader}>
         <Image
-          source={require('../../assets/images/react-logo.png')} // Replace with user's profile picture
+          source={require('@/assets/images/react-logo.png')} // Replace with user's profile picture
           style={styles.profileImage}
         />
         <View style={styles.profileInfo}>
           <ThemedText type="title" style={styles.profileName}>
-            John Doe
+            Dirgam Skibidi
           </ThemedText>
-          <ThemedText type="subtitle">johndoe@example.com</ThemedText>
+          <ThemedText type="subtitle">dirgam@ganteng.com</ThemedText>
         </View>
       </ThemedView>
 

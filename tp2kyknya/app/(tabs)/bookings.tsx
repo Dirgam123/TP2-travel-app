@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, Image, StyleSheet, TouchableOpacity, View, TextStyle, ViewStyle, ImageStyle } from 'react-native';
-
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
@@ -8,31 +7,31 @@ interface Booking {
   id: string;
   destination: string;
   date: string;
-  image: any; // Adjust to specific image type if needed
+  image: any;
 }
 
-const bookings: Booking[] = [
-  {
-    id: '1',
-    destination: 'Paris',
-    date: '2025-02-14',
-    image: require('../../assets/images/react-logo.png'),
-  },
-  {
-    id: '2',
-    destination: 'Bali',
-    date: '2025-03-05',
-    image: require('../../assets/images/react-logo.png'),
-  },
-  {
-    id: '3',
-    destination: 'New York',
-    date: '2025-04-20',
-    image: require('../../assets/images/react-logo.png'),
-  },
-];
-
 export default function BookingsScreen(): JSX.Element {
+  const [bookings, setBookings] = useState<Booking[]>([
+    {
+      id: '1',
+      destination: 'Paris',
+      date: '2025-02-14',
+      image: require('@/assets/images/react-logo.png'),
+    },
+    {
+      id: '2',
+      destination: 'Bali',
+      date: '2025-03-05',
+      image: require('@/assets/images/react-logo.png'),
+    },
+    {
+      id: '3',
+      destination: 'New York',
+      date: '2025-04-20',
+      image: require('@/assets/images/react-logo.png'),
+    },
+  ]);
+
   const renderBooking = ({ item }: { item: Booking }) => (
     <TouchableOpacity style={styles.bookingCard}>
       <Image source={item.image} style={styles.bookingImage} />
@@ -65,17 +64,7 @@ export default function BookingsScreen(): JSX.Element {
   );
 }
 
-interface Styles {
-  container: ViewStyle;
-  pageTitle: TextStyle;
-  listContainer: ViewStyle;
-  bookingCard: ViewStyle;
-  bookingImage: ImageStyle;
-  bookingInfo: ViewStyle;
-  emptyContainer: ViewStyle;
-}
-
-const styles = StyleSheet.create<Styles>({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
