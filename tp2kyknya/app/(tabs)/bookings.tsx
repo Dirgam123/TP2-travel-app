@@ -14,20 +14,20 @@ export default function BookingsScreen(): JSX.Element {
   const [bookings, setBookings] = useState<Booking[]>([
     {
       id: '1',
-      destination: 'Paris',
-      date: '2025-02-14',
+      destination: 'Coming soon feature',
+      date: 'Coming soon feature',
       image: require('@/assets/images/react-logo.png'),
     },
     {
       id: '2',
-      destination: 'Bali',
-      date: '2025-03-05',
+      destination: 'Coming soon feature',
+      date: 'Coming soon feature',
       image: require('@/assets/images/react-logo.png'),
     },
     {
       id: '3',
-      destination: 'New York',
-      date: '2025-04-20',
+      destination: 'Coming soon feature',
+      date: 'Coming soon feature',
       image: require('@/assets/images/react-logo.png'),
     },
   ]);
@@ -36,7 +36,7 @@ export default function BookingsScreen(): JSX.Element {
     <TouchableOpacity style={styles.bookingCard}>
       <Image source={item.image} style={styles.bookingImage} />
       <View style={styles.bookingInfo}>
-        <ThemedText type="cardTitle">{item.destination}</ThemedText>
+        <ThemedText>{item.destination}</ThemedText>
         <ThemedText type="default">{`Date: ${item.date}`}</ThemedText>
       </View>
     </TouchableOpacity>

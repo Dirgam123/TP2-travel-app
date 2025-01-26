@@ -1,44 +1,64 @@
-import React, { useState } from 'react';
-import { Button, StyleSheet, View } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import React from 'react';
+import { Image, StyleSheet, Button } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
+import MapView, { Marker } from 'react-native-maps';
 
 export default function DestinationDetailScreen(): JSX.Element {
   const params = useLocalSearchParams();
-  const [bookings, setBookings] = useState<any[]>([]);  // Menyimpan daftar booking
+  const router = useRouter();
 
-  const currentDate = new Date().toISOString().split('T')[0]; // Mendapatkan tanggal saat ini dalam format YYYY-MM-DD
+  const coordinates = {
+    latitude: parseFloat(params.latitude as string),
+    longitude: parseFloat(params.longitude as string),
+  };
 
   const handleBookNow = () => {
-    const newBooking = {
-      id: Math.random().toString(36).substr(2, 9), // ID unik untuk booking
-      destination: params.name as string,
-      date: currentDate,
-      image: require('@/assets/images/react-logo.png'), // Gambar default, ganti sesuai kebutuhan
-    };
-    setBookings((prevBookings) => [...prevBookings, newBooking]);
-    alert('Booking successful!');
+    router.push({
+      pathname: '/IsiDataScreen',
+      params: {
+        name: params.name,
+        price: params.price,
+        city: params.city,
+        country: params.country,
+      },
+    });
   };
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>{params.name}</ThemedText>
-      <ThemedText type="subtitle" style={styles.description}>{params.description}</ThemedText>
-      <ThemedText type="subtitle" style={styles.price}>Price: {params.price}</ThemedText>
-      <ThemedText type="subtitle" style={styles.city}>Location: {params.city}, {params.country}</ThemedText>
+      <Image
+        source={params.image}
+        style={styles.image}
+      />
+
+      <ThemedText type="title" style={styles.title}>
+        {params.name}
+      </ThemedText>
+      <ThemedText type="subtitle" style={styles.description}>
+        {params.description}
+      </ThemedText>
+      <ThemedText type="subtitle" style={styles.price}>
+        Price: {params.price}
+      </ThemedText>
+      <ThemedText type="subtitle" style={styles.location}>
+        Location: {params.city}, {params.country}
+      </ThemedText>
+
+      <MapView
+        style={styles.map}
+        initialRegion={{
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+        <Marker coordinate={coordinates} title={params.name} description={params.description} />
+      </MapView>
 
       <Button title="Book Now" onPress={handleBookNow} />
-      
-      {/* Menampilkan daftar booking */}
-      <View style={styles.bookingList}>
-        <ThemedText type="subtitle">Your Bookings:</ThemedText>
-        {bookings.map((booking) => (
-          <View key={booking.id} style={styles.bookingItem}>
-            <ThemedText>{booking.destination} - {booking.date}</ThemedText>
-          </View>
-        ))}
-      </View>
     </ThemedView>
   );
 }
@@ -47,28 +67,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#f9f9f9',
+  },
+  image: {
+    width: '100%',
+    height: 250,
+    borderRadius: 8,
+    marginBottom: 16,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#333',
   },
   description: {
     fontSize: 16,
-    marginVertical: 8,
+    marginBottom: 8,
+    color: '#555',
   },
   price: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 8,
     color: 'green',
   },
-  city: {
+  location: {
     fontSize: 16,
-    marginVertical: 8,
+    marginBottom: 16,
+    color: '#555',
   },
-  bookingList: {
-    marginTop: 20,
-  },
-  bookingItem: {
-    marginTop: 10,
+  map: {
+    width: '100%',
+    height: 250,
+    marginBottom: 16,
+    borderRadius: 8,
   },
 });

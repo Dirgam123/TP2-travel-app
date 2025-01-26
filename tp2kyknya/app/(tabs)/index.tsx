@@ -1,62 +1,60 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, ViewStyle, ImageStyle, TextStyle } from 'react-native';
-import { useRouter } from 'expo-router'; // Import useRouter for navigation
-
+import { Image, StyleSheet, TouchableOpacity, ViewStyle, ImageStyle, TextStyle, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
 export default function HomeScreen(): JSX.Element {
-  const router = useRouter(); // Initialize router
+  const router = useRouter();
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#E6F7F8', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: '#ffffff', dark: '#1D3D47' }}
       headerImage={
         <Image
-          source={require('@/assets/images/react-logo.png')} // Replace with a relevant travel image
+          source={require('@/assets/images/logoapp.png')}
           style={styles.headerImage}
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Discover Your Next Adventure</ThemedText>
-        <ThemedText type="subtitle">Explore top destinations and plan your perfect getaway.</ThemedText>
+        <ThemedText type="title">Dirgam Travel</ThemedText>
+        <ThemedText type="subtitle">Wujudkan rencana healing kamu.</ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.sectionContainer}>
-        <ThemedText type="sectionTitle">Popular Destinations</ThemedText>
-        <ThemedView style={styles.destinations}>
-          <TouchableOpacity style={styles.card}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.bannerContainer}
+        >
+          <TouchableOpacity style={styles.banner}>
             <Image
-              source={require('@/assets/images/react-logo.png')} // Replace with Paris image
-              style={styles.cardImage}
+              source={require('@/assets/images/banner2.png')}
+              style={styles.bannerImage}
             />
-            <ThemedText type="cardTitle">Paris</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.card}>
+          <TouchableOpacity style={styles.banner}>
             <Image
-              source={require('@/assets/images/react-logo.png')} // Replace with Bali image
-              style={styles.cardImage}
+              source={require('@/assets/images/banner1.png')}
+              style={styles.bannerImage}
             />
-            <ThemedText type="cardTitle">Bali</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.card}>
+          <TouchableOpacity style={styles.banner}>
             <Image
-              source={require('@/assets/images/react-logo.png')} // Replace with New York image
-              style={styles.cardImage}
+              source={require('@/assets/images/banner3.png')}
+              style={styles.bannerImage}
             />
-            <ThemedText type="cardTitle">New York</ThemedText>
           </TouchableOpacity>
-        </ThemedView>
+        </ScrollView>
       </ThemedView>
 
       <ThemedView style={styles.sectionContainer}>
-        <ThemedText type="sectionTitle">Get Started</ThemedText>
         <TouchableOpacity
           style={styles.ctaButton}
-          onPress={() => router.push('/explore')} // Navigate to Explore screen
+          onPress={() => router.push('/explore')}
         >
-          <ThemedText type="ctaText">Plan Your Trip</ThemedText>
+          <ThemedText>Plan Your Trip</ThemedText>
         </TouchableOpacity>
       </ThemedView>
     </ParallaxScrollView>
@@ -67,12 +65,12 @@ interface Styles {
   headerImage: ImageStyle;
   titleContainer: ViewStyle;
   sectionContainer: ViewStyle;
-  destinations: ViewStyle;
-  card: ViewStyle;
-  cardImage: ImageStyle;
+  bannerContainer: ViewStyle;
+  banner: ViewStyle;
+  bannerImage: ImageStyle;
   ctaButton: ViewStyle;
   sectionTitle: TextStyle;
-  cardTitle: TextStyle;
+  bannerText: TextStyle;
   ctaText: TextStyle;
 }
 
@@ -81,6 +79,7 @@ const styles = StyleSheet.create<Styles>({
     height: 200,
     width: '100%',
     resizeMode: 'cover',
+    marginTop: 32,
   },
   titleContainer: {
     margin: 16,
@@ -90,24 +89,24 @@ const styles = StyleSheet.create<Styles>({
   sectionContainer: {
     margin: 16,
   },
-  destinations: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  bannerContainer: {
+    gap: 16,
     marginTop: 16,
+    paddingHorizontal: 8,
   },
-  card: {
-    width: '30%',
+  banner: {
     borderRadius: 8,
     overflow: 'hidden',
     elevation: 2,
     backgroundColor: '#fff',
+    marginRight: 16,
   },
-  cardImage: {
-    height: 100,
-    width: '100%',
+  bannerImage: {
+    height: 150,
+    width: 300,
     resizeMode: 'cover',
   },
-  cardTitle: {
+  bannerText: {
     textAlign: 'center',
     marginTop: 8,
     fontSize: 16,

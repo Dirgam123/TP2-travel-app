@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Gunakan pustaka ikon yang tersedia di Expo
+import { Ionicons } from '@expo/vector-icons';
 
 import { HapticTab } from '@/components/HapticTab';
 import TabBarBackground from '@/components/ui/TabBarBackground';
